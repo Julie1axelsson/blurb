@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Om Blurb - Poesi i varje dag</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Quicksand:wght@300;400;500&display=swap');
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #faf6f7;
+            color: #5a5a5a;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #f0e4ff 0%, #d8eeff 100%);
+        }
+        
+        .feather {
+            position: absolute;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background: #a18cd1;
+            background: linear-gradient(to right, #a18cd1, #fbc2eb);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(161, 140, 209, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg fixed w-full z-10">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-purple-600 font-serif">Blurb</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-purple-600 transition">Hem</a>
+                    <a href="#" class="text-purple-600 font-medium">Om Blurb</a>
+                    <a href="#" class="text-gray-700 hover:text-purple-600 transition">Skapa bok</a>
+                    <a href="#" class="text-gray-700 hover:text-purple-600 transition">FAQ</a>
+                    <a href="#" class="px-4 py-2 rounded-full text-purple-600 border border-purple-600 hover:bg-purple-600 hover:text-white transition">Logga in</a>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-gray-700">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg min-h-[50vh] flex items-center justify-center relative overflow-hidden pt-32">
+        <!-- Decorative elements -->
+        <div class="feather" style="top: 20%; left: 10%;">
+            <i data-feather="feather" class="text-purple-400 w-12 h-12"></i>
+        </div>
+        <div class="feather" style="top: 30%; right: 15%; animation-delay: 1s;">
+            <i data-feather="pen-tool" class="text-blue-300 w-16 h-16"></i>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-6 text-center z-10" data-aos="fade-up">
+            <h1 class="text-4xl md:text-6xl font-serif font-bold text-gray-800 mb-6">Om Blurb</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-12 max-w-2xl mx-auto">
+                En plats där vardagens små ögonblick blir poesi.
+            </p>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="py-20 px-4 max-w-6xl mx-auto">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+                Blurb hjälper dig att förvandla dagliga reflektioner till poesi. 
+                Varje mening du skriver blir en vers i din personliga livsdikt.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Purpose Card -->
+            <div class="feature-card p-8 shadow-md" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 flex items-center justify-center text-purple-600 mb-6 mx-auto">
+                    <i data-feather="heart" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-2xl font-serif font-bold text-gray-800 mb-4 text-center">Syfte</h3>
+                <p class="text-gray-600 text-center">
+                    Varför Blurb finns: att hjälpa människor reflektera och minnas vardagen på ett vackert sätt.
+                </p>
+            </div>
+            
+            <!-- How it Works Card -->
+            <div class="feature-card p-8 shadow-md" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-100 to-teal-100 flex items-center justify-center text-blue-600 mb-6 mx-auto">
+                    <i data-feather="edit-3" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-2xl font-serif font-bold text-gray-800 mb-4 text-center">Så fungerar det</h3>
+                <p class="text-gray-600 text-center">
+                    Skriv en mening, få tillbaka en dikt, och spara den i din privata tidslinje.
+                </p>
+            </div>
+            
+            <!-- Vision Card -->
+            <div class="feature-card p-8 shadow-md" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-r from-yellow-100 to-orange-100 flex items-center justify-center text-yellow-600 mb-6 mx-auto">
+                    <i data-feather="eye" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-2xl font-serif font-bold text-gray-800 mb-4 text-center">Visionen</h3>
+                <p class="text-gray-600 text-center">
+                    Poesi som dagbok, något som kan bli en bok att dela med barn eller barnbarn.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 py-12 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-serif font-bold text-gray-800 mb-4">Blurb</h3>
+                    <p class="text-gray-600">
+                        Poesi i varje dag. En mening kan vara nog.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-4">Produkt</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Funktioner</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Priser</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">App</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-4">Resurser</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Blogg</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Inspiration</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-4">Följ oss</h4>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-600 hover:text-purple-600 transition">
+                            <i data-feather="instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-purple-600 transition">
+                            <i data-feather="twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-purple-600 transition">
+                            <i data-feather="facebook"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 mt-12 pt-8 text-center text-gray-500">
+                <p>© 2025 Blurb. Alla rättigheter reserverade.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        feather.replace();
+    </script>
+</body>
+</html>
