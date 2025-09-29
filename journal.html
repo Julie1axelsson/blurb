@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journal | Dina Blurbs</title>
+    <title>Blurb | Skapa poesi från din dag</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -21,6 +21,7 @@
             font-family: 'Quicksand', sans-serif;
             background-color: #f7f3ff;
             color: #5a5a5a;
+            min-height: 100vh;
         }
         
         .header-title {
@@ -32,32 +33,33 @@
             background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
         }
         
-        .card-entry {
+        .card {
             background-color: #ffffff;
-            border-left: 5px solid #a18cd1; /* Lila accent */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
-        .card-entry:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(161, 140, 209, 0.2);
-        }
-        
+
         .poetry-text {
             font-family: 'Playfair Display', serif;
             font-style: italic;
         }
 
-        .month-header {
-            font-family: 'Playfair Display', serif;
+        .gradient-button {
+            background: linear-gradient(45deg, #a18cd1, #fbc2eb);
+            transition: background 0.3s ease, transform 0.1s ease;
         }
         
+        .gradient-button:hover {
+            background: linear-gradient(45deg, #fbc2eb, #a18cd1);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(161, 140, 209, 0.4);
+        }
+
         .loading-animation {
-            border: 4px solid rgba(161, 140, 209, 0.3);
+            border: 4px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top: 4px solid #a18cd1;
-            width: 30px;
-            height: 30px;
+            border-top: 4px solid #ffffff;
+            width: 20px;
+            height: 20px;
             animation: spin 1s linear infinite;
         }
 
@@ -73,18 +75,14 @@
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <!-- Loggan länkar till startsidan -->
-                    <a href="index.html" class="text-2xl font-bold text-purple-600 header-title hover:text-purple-700 transition">Blurb</a>
+                    <!-- Loggan är nu den aktiva länken till startsidan, href="#" indikerar att man är på startsidan -->
+                    <a href="index.html" class="text-2xl font-bold text-purple-600 header-title transition border-b-2 border-purple-600 pb-1">Blurb</a>
                 </div>
-                <!-- Navigation Links -->
                 <div class="hidden md:flex items-center space-x-8">
                     <!-- "Hem" borttaget -->
-                    <a href="#" class="text-purple-600 font-medium transition border-b-2 border-purple-600 pb-1">Journal</a>
-                    
-                    <!-- Länkar -->
+                    <a href="journal.html" class="text-gray-700 hover:text-purple-600 transition">Journal</a>
                     <a href="https://julie1axelsson.github.io/blurb/faq" class="text-gray-700 hover:text-purple-600 transition">FAQ</a>
                     <a href="https://julie1axelsson.github.io/blurb/omblurb" class="text-gray-700 hover:text-purple-600 transition">Om Blurb</a>
-                    
                     <a href="https://julie1axelsson.github.io/blurb/skapabok" class="text-gray-700 hover:text-purple-600 transition">Skapa bok</a>
                     <a href="https://julie1axelsson.github.io/blurb/loggain" class="px-4 py-2 rounded-full text-purple-600 border border-purple-600 hover:bg-purple-600 hover:text-white transition">Logga in</a>
                 </div>
@@ -97,37 +95,62 @@
         </div>
     </nav>
 
-    <!-- Header Section -->
-    <section class="hero-bg pt-28 pb-16 relative overflow-hidden">
-        <div class="max-w-6xl mx-auto px-4 text-center" data-aos="fade-down">
-            <h1 class="text-5xl md:text-6xl header-title font-bold text-white mb-3">Min Journal</h1>
-            <p class="text-xl text-white font-medium">Alla dina sparade poetiska Blurbs, samlade genom tiden.</p>
-        </div>
-    </section>
-
     <!-- Main Content Section -->
-    <section class="py-12 relative">
-        <div class="max-w-3xl mx-auto px-4">
+    <main class="flex flex-col items-center justify-center pt-24 pb-12">
+        <div class="max-w-xl w-full mx-auto px-4">
             
-            <!-- Laddningsindikator -->
-            <div id="loading-container" class="flex flex-col items-center justify-center p-12 card-entry rounded-xl shadow-lg" data-aos="fade-up">
-                <div class="loading-animation"></div>
-                <p class="mt-4 text-lg text-gray-700">Laddar dina dagliga inlägg...</p>
-            </div>
-            
-            <!-- Journalinnehåll -->
-            <div id="journal-content" class="hidden">
-                <!-- Inlägg grupperade efter månad/år kommer att läggas till här av JavaScript -->
+            <header class="text-center mb-8" data-aos="fade-down">
+                <h1 class="text-5xl md:text-6xl header-title font-bold text-gray-800 mb-2">Vad hände idag?</h1>
+                <p class="text-xl text-gray-600 font-medium">Skriv ned en mening eller ett stycke, så omvandlar vi det till poesi.</p>
+            </header>
+
+            <div class="card p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100" data-aos="fade-up">
+                
+                <!-- Input Area -->
+                <textarea 
+                    id="daily-input" 
+                    rows="4" 
+                    class="w-full p-4 border border-purple-300 rounded-xl focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition mb-4 text-gray-700"
+                    placeholder="T.ex. 'Jag åt en smörgås till frukost men den var lite torr och jag var stressad på jobbet.'"></textarea>
+
+                <!-- Action Button -->
+                <button 
+                    id="generate-button"
+                    class="gradient-button w-full py-3 rounded-full text-white font-semibold text-lg flex items-center justify-center shadow-lg hover:shadow-xl disabled:opacity-50"
+                    onclick="generateBlurb()"
+                    disabled>
+                    <span id="button-text">Skapa Blurb & Spara</span>
+                    <div id="loading-spinner" class="loading-animation ml-2 hidden"></div>
+                </button>
+                
+                <!-- Ny plats för diskret användarinfo -->
+                <p id="user-info" class="text-xs text-gray-400 mt-4 text-center">Ansluter till Blurb-tjänsten...</p>
+
             </div>
 
-            <!-- Inga inlägg hittades -->
-            <div id="no-entries-message" class="hidden text-center p-12 card-entry rounded-xl shadow-lg">
-                <i data-feather="book-open" class="w-12 h-12 text-purple-400 mx-auto mb-4"></i>
-                <h2 class="text-2xl font-bold text-gray-700 mb-2">Din journal är tom</h2>
-                <p class="text-gray-600">Börja skriva din första Blurb på <a href="index.html" class="text-purple-600 underline hover:text-purple-700 font-medium">hemsidan</a>!</p>
+            <!-- Result Area -->
+            <div id="result-card" class="card mt-8 p-6 md:p-8 rounded-2xl shadow-xl border border-purple-200 hidden" data-aos="fade-up">
+                <h2 class="text-2xl font-bold text-purple-600 mb-2 flex items-center">
+                    <i data-feather="feather" class="w-6 h-6 mr-2"></i>
+                    Din senaste Blurb
+                </h2>
+                <p id="poetry-output" class="poetry-text text-xl text-gray-800 leading-relaxed min-h-[30px]"></p>
+                <div class="mt-4 pt-4 border-t border-gray-100 text-center">
+                    <a href="journal.html" class="text-purple-600 hover:text-purple-700 font-medium underline transition flex items-center justify-center">
+                        Se alla dina Blurbs i din journal här
+                        <i data-feather="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </a>
+                </div>
             </div>
+
+            <!-- Error Message Box -->
+            <div id="error-message" class="card mt-8 p-6 rounded-xl shadow-md bg-red-50 border border-red-200 hidden text-red-700">
+                <p class="font-semibold flex items-center"><i data-feather="alert-triangle" class="w-5 h-5 mr-2"></i>Ett fel uppstod.</p>
+                <p id="error-text" class="mt-1 text-sm"></p>
+            </div>
+
         </div>
-    </section>
+    </main>
 
     <!-- Footer -->
     <footer class="bg-gray-100 py-6 px-4 mt-12">
@@ -139,12 +162,12 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, query, doc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
         // --- Globals ---
         setLogLevel('Debug');
-        let db, auth, userId;
+        let db, auth, userId, isAuthReady = false;
         
         // Canvas variabler
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -152,11 +175,15 @@
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         
         // HTML Element
-        const journalContent = document.getElementById('journal-content');
-        const loadingContainer = document.getElementById('loading-container');
-        const noEntriesMessage = document.getElementById('no-entries-message');
-
-        const monthNames = ["Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"];
+        const inputField = document.getElementById('daily-input');
+        const generateButton = document.getElementById('generate-button');
+        const buttonText = document.getElementById('button-text');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const poetryOutput = document.getElementById('poetry-output');
+        const resultCard = document.getElementById('result-card');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        const userInfoElement = document.getElementById('user-info'); // Nytt element
 
         // --- Firebase/Auth Setup ---
 
@@ -175,148 +202,155 @@
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         userId = user.uid;
-                        fetchDailyEntries();
+                        userInfoElement.textContent = `Du är inloggad. Dina Blurbs sparas.`;
+                        isAuthReady = true;
+                        generateButton.disabled = false;
                     } else {
                         userId = crypto.randomUUID();
-                        fetchDailyEntries(); 
+                        userInfoElement.textContent = 'Du är anonym. Data sparas endast tillfälligt. Logga in för permanent sparning.';
+                        isAuthReady = true;
+                        generateButton.disabled = false;
                     }
                 });
 
             } catch (error) {
                 console.error("Fel vid initialisering av Firebase eller autentisering:", error);
-                // Visa ett felmeddelande
-                loadingContainer.classList.add('hidden');
-                noEntriesMessage.classList.remove('hidden');
-                noEntriesMessage.innerHTML = `<i data-feather="alert-triangle" class="w-12 h-12 text-red-400 mx-auto mb-4"></i><h2 class="text-2xl font-bold text-gray-700 mb-2">Kunde inte ladda journalen</h2><p class="text-gray-600">Kontrollera din anslutning.</p>`;
-                feather.replace();
+                errorText.textContent = "Kunde inte ansluta till databasen. Kontrollera din anslutning.";
+                errorMessage.classList.remove('hidden');
+                generateButton.disabled = true;
+            }
+        }
+        
+        // --- API & Database Functions ---
+
+        /**
+         * Retries a fetch request with exponential backoff.
+         */
+        async function fetchWithRetry(url, options, maxRetries = 3) {
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) {
+                        return response;
+                    }
+                    if (response.status === 429) { // Too many requests
+                        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        continue;
+                    }
+                    throw new Error(`API request failed with status: ${response.status}`);
+                } catch (error) {
+                    if (i === maxRetries - 1) throw error;
+                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
             }
         }
         
         /**
-         * Lyssnar på alla dagliga inlägg för den aktuella användaren och renderar dem.
+         * Kallar Gemini API för att generera en poetisk mening.
+         * @param {string} input - Användarens dagliga inmatning.
+         * @returns {Promise<string>} Den genererade poetiska meningen.
          */
-        function fetchDailyEntries() {
-            if (!userId) return;
+        async function getPoetryBlurb(input) {
+            const systemPrompt = "Du är en poetisk tolk. Omvandla följande text, oavsett längd, till en enda, kort, vacker, och suggestiv poetisk mening på svenska. Meningslängden är strikt begränsad till en mening. Inkludera inga inledande fraser som 'Här är meningen:' eller liknande, endast den poetiska meningen.";
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
-            const collectionPath = `/artifacts/${appId}/users/${userId}/daily_entries`;
-            const entriesCollection = collection(db, collectionPath);
-            
-            // Använd onSnapshot för att få realtidsuppdateringar
-            onSnapshot(entriesCollection, (snapshot) => {
-                const entries = [];
-                snapshot.forEach(doc => {
-                    entries.push(doc.data());
-                });
+            const payload = {
+                contents: [{ parts: [{ text: input }] }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+            };
 
-                // Sortera efter tidsstämpel (nyaste först)
-                entries.sort((a, b) => b.timestamp - a.timestamp); 
-                
-                renderJournal(entries);
-
-            }, (error) => {
-                console.error("Fel vid realtidslyssning av journal:", error);
-                loadingContainer.classList.add('hidden');
-                noEntriesMessage.classList.remove('hidden');
+            const response = await fetchWithRetry(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
             });
+
+            const result = await response.json();
+            const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+            
+            if (!text) {
+                throw new Error("Kunde inte generera poetisk mening.");
+            }
+            return text.trim();
         }
 
         /**
-         * Renderar de hämtade inläggen, grupperade efter år och månad.
-         * @param {Array<Object>} entries - Listan över inlägg från Firestore.
+         * Sparar inmatningen och den poetiska meningen till Firestore.
          */
-        function renderJournal(entries) {
-            loadingContainer.classList.add('hidden');
-            journalContent.innerHTML = '';
-
-            if (entries.length === 0) {
-                noEntriesMessage.classList.remove('hidden');
-                journalContent.classList.add('hidden');
+        async function saveEntry(originalInput, poetrySentence) {
+            if (!isAuthReady || !db || !userId) {
+                console.warn("Firebase är inte redo att spara data.");
                 return;
             }
 
-            journalContent.classList.remove('hidden');
-            noEntriesMessage.classList.add('hidden');
+            try {
+                const now = new Date();
+                const entryData = {
+                    originalInput: originalInput,
+                    poetrySentence: poetrySentence,
+                    timestamp: now.getTime(),
+                    year: now.getFullYear(),
+                    month: now.getMonth() + 1, // Månad (1-12)
+                    day: now.getDate(),
+                    inputType: originalInput.includes(' ') ? 'Stycke' : 'Mening', // Enkel gissning om input-typ
+                };
 
-            // Gruppera efter ÅÅÅÅ-MM
-            const groupedEntries = entries.reduce((acc, entry) => {
-                // Använd YYYY-MM för gruppering
-                const key = `${entry.year}-${String(entry.month).padStart(2, '0')}`;
-                if (!acc[key]) {
-                    acc[key] = [];
-                }
-                acc[key].push(entry);
-                return acc;
-            }, {});
-
-            // Gå igenom de grupperade inläggen (nyaste månaden först)
-            const sortedKeys = Object.keys(groupedEntries).sort().reverse();
-
-            sortedKeys.forEach(key => {
-                const [year, monthIndex] = key.split('-');
-                const monthName = monthNames[parseInt(monthIndex, 10) - 1]; // -1 för array-index
-
-                // 1. Skapa Månadsrubrik
-                const header = document.createElement('h2');
-                header.className = 'month-header text-4xl font-bold text-gray-800 mt-10 mb-6 border-b pb-2 border-purple-200';
-                header.textContent = `${monthName} ${year}`;
-                header.setAttribute('data-aos', 'fade-right');
-                journalContent.appendChild(header);
-
-                // 2. Skapa inläggskort
-                groupedEntries[key].forEach(entry => {
-                    const card = createEntryCard(entry);
-                    journalContent.appendChild(card);
-                });
-            });
-
-            // Ersätt ikoner efter att innehållet har lagts till
-            feather.replace();
+                const collectionPath = `/artifacts/${appId}/users/${userId}/daily_entries`;
+                await addDoc(collection(db, collectionPath), entryData);
+                console.log("Inlägg sparat till Firestore.");
+            } catch (error) {
+                console.error("Fel vid sparande till Firestore:", error);
+                throw new Error("Kunde inte spara inlägget.");
+            }
         }
 
-        /**
-         * Skapar ett HTML-element för ett enskilt inlägg.
-         */
-        function createEntryCard(entry) {
-            const date = new Date(entry.timestamp);
-            const dateString = date.toLocaleDateString('sv-SE', { weekday: 'short', day: 'numeric', month: 'short' });
+        // --- Main Workflow ---
 
-            const card = document.createElement('div');
-            card.className = 'card-entry p-5 mb-4 rounded-xl shadow-md flex justify-between items-start';
-            card.setAttribute('data-aos', 'fade-up');
+        window.generateBlurb = async () => {
+            const originalInput = inputField.value.trim();
+            errorMessage.classList.add('hidden');
+            resultCard.classList.add('hidden');
 
-            // Vänster sida (Poetisk mening och originalinmatning)
-            const content = document.createElement('div');
-            content.className = 'flex-grow pr-4';
+            if (originalInput.length < 5) {
+                errorText.textContent = "Skriv in minst 5 tecken för att skapa din Blurb.";
+                errorMessage.classList.remove('hidden');
+                return;
+            }
 
-            // Poesi
-            const poetry = document.createElement('p');
-            poetry.className = 'poetry-text text-xl text-gray-800 mb-2 leading-relaxed';
-            poetry.textContent = entry.poetrySentence;
-            content.appendChild(poetry);
+            // Ställ in laddningsläge
+            generateButton.disabled = true;
+            buttonText.textContent = "Skapar...";
+            loadingSpinner.classList.remove('hidden');
 
-            // Originalinmatning (gömd som detalj)
-            const details = document.createElement('p');
-            details.className = 'text-sm text-gray-500 mt-1';
-            const inputType = entry.inputType === 'Mening' ? 'Mening' : 'Svar';
-            details.textContent = `${inputType}: "${entry.originalInput.substring(0, 70)}${entry.originalInput.length > 70 ? '...' : ''}"`;
-            content.appendChild(details);
-
-            card.appendChild(content);
-
-            // Höger sida (Datum)
-            const dateContainer = document.createElement('div');
-            dateContainer.className = 'flex-shrink-0 text-right';
-            
-            const dateSpan = document.createElement('span');
-            dateSpan.className = 'text-sm font-semibold text-purple-600 uppercase';
-            dateSpan.textContent = dateString;
-            dateContainer.appendChild(dateSpan);
-            
-            card.appendChild(dateContainer);
-
-            return card;
-        }
-
+            try {
+                // 1. Generera Blurb
+                const poetrySentence = await getPoetryBlurb(originalInput);
+                
+                // 2. Spara till Journal
+                await saveEntry(originalInput, poetrySentence);
+                
+                // 3. Visa resultat
+                poetryOutput.textContent = poetrySentence;
+                resultCard.classList.remove('hidden');
+                inputField.value = ''; // Rensa fältet
+                
+            } catch (error) {
+                console.error("Huvudfel i genereringen:", error);
+                errorText.textContent = error.message || "Ett okänt fel uppstod under generering/sparande.";
+                errorMessage.classList.remove('hidden');
+            } finally {
+                // Återställ knapp
+                buttonText.textContent = "Skapa Blurb & Spara";
+                loadingSpinner.classList.add('hidden');
+                generateButton.disabled = false;
+                feather.replace(); // Uppdatera ikoner efter att resultatet visas
+            }
+        };
 
         // --- Initialization ---
 
