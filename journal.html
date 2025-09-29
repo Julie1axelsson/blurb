@@ -3,69 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blurb | Skapa poesi från din dag</title>
+    <title>Om Blurb - Poesi i varje dag</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    
-    <!-- Firebase Imports -->
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js" type="module"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js" type="module"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js" type="module"></script>
-
+    <script src="https://unpkg.com/feather-icons"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Quicksand:wght@300;400;500&display=swap');
         
         body {
             font-family: 'Quicksand', sans-serif;
-            background-color: #f7f3ff;
+            background-color: #faf6f7;
             color: #5a5a5a;
-            min-height: 100vh;
-        }
-        
-        .header-title {
-            font-family: 'Playfair Display', serif;
-            color: #3b3a3c;
         }
         
         .hero-bg {
-            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+            background: linear-gradient(135deg, #f0e4ff 0%, #d8eeff 100%);
         }
         
-        .card {
-            background-color: #ffffff;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .poetry-text {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-        }
-
-        .gradient-button {
-            background: linear-gradient(45deg, #a18cd1, #fbc2eb);
-            transition: background 0.3s ease, transform 0.1s ease;
+        .feather {
+            position: absolute;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
         }
         
-        .gradient-button:hover {
-            background: linear-gradient(45deg, #fbc2eb, #a18cd1);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(161, 140, 209, 0.4);
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
         }
-
-        .loading-animation {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid #ffffff;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            transition: all 0.3s ease;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background: #a18cd1;
+            background: linear-gradient(to right, #a18cd1, #fbc2eb);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(161, 140, 209, 0.3);
         }
     </style>
 </head>
@@ -75,16 +64,14 @@
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <!-- Loggan är nu den aktiva länken till startsidan, href="#" indikerar att man är på startsidan -->
-                    <a href="index.html" class="text-2xl font-bold text-purple-600 header-title transition border-b-2 border-purple-600 pb-1">Blurb</a>
+                    <span class="text-2xl font-bold text-purple-600 font-serif">Blurb</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <!-- "Hem" borttaget -->
-                    <a href="journal.html" class="text-gray-700 hover:text-purple-600 transition">Journal</a>
-                    <a href="https://julie1axelsson.github.io/blurb/faq" class="text-gray-700 hover:text-purple-600 transition">FAQ</a>
-                    <a href="https://julie1axelsson.github.io/blurb/omblurb" class="text-gray-700 hover:text-purple-600 transition">Om Blurb</a>
-                    <a href="https://julie1axelsson.github.io/blurb/skapabok" class="text-gray-700 hover:text-purple-600 transition">Skapa bok</a>
-                    <a href="https://julie1axelsson.github.io/blurb/loggain" class="px-4 py-2 rounded-full text-purple-600 border border-purple-600 hover:bg-purple-600 hover:text-white transition">Logga in</a>
+                    <a href="#" class="text-gray-700 hover:text-purple-600 transition">Hem</a>
+                    <a href="#" class="text-purple-600 font-medium">Om Blurb</a>
+                    <a href="#" class="text-gray-700 hover:text-purple-600 transition">Skapa bok</a>
+                    <a href="#" class="text-gray-700 hover:text-purple-600 transition">FAQ</a>
+                    <a href="#" class="px-4 py-2 rounded-full text-purple-600 border border-purple-600 hover:bg-purple-600 hover:text-white transition">Logga in</a>
                 </div>
                 <div class="md:hidden">
                     <button class="text-gray-700">
@@ -95,274 +82,100 @@
         </div>
     </nav>
 
-    <!-- Main Content Section -->
-    <main class="flex flex-col items-center justify-center pt-24 pb-12">
-        <div class="max-w-xl w-full mx-auto px-4">
+    <!-- Hero Section -->
+    <section class="hero-bg min-h-[50vh] flex items-center justify-center relative overflow-hidden pt-32">
+        <!-- Decorative elements -->
+        <div class="feather" style="top: 20%; left: 10%;">
+            <i data-feather="feather" class="text-purple-400 w-12 h-12"></i>
+        </div>
+        <div class="feather" style="top: 30%; right: 15%; animation-delay: 1s;">
+            <i data-feather="pen-tool" class="text-blue-300 w-16 h-16"></i>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-6 text-center z-10" data-aos="fade-up">
+            <h1 class="text-4xl md:text-6xl font-serif font-bold text-gray-800 mb-6">Om Blurb</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-12 max-w-2xl mx-auto">
+                En plats där vardagens små ögonblick blir poesi.
+            </p>
+        </div>
+    </section>
+
+       <section class="py-12 relative">
+        <div class="max-w-3xl mx-auto px-4">
             
-            <header class="text-center mb-8" data-aos="fade-down">
-                <h1 class="text-5xl md:text-6xl header-title font-bold text-gray-800 mb-2">Vad hände idag?</h1>
-                <p class="text-xl text-gray-600 font-medium">Skriv ned en mening eller ett stycke, så omvandlar vi det till poesi.</p>
-            </header>
-
-            <div class="card p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100" data-aos="fade-up">
-                
-                <!-- Input Area -->
-                <textarea 
-                    id="daily-input" 
-                    rows="4" 
-                    class="w-full p-4 border border-purple-300 rounded-xl focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition mb-4 text-gray-700"
-                    placeholder="T.ex. 'Jag åt en smörgås till frukost men den var lite torr och jag var stressad på jobbet.'"></textarea>
-
-                <!-- Action Button -->
-                <button 
-                    id="generate-button"
-                    class="gradient-button w-full py-3 rounded-full text-white font-semibold text-lg flex items-center justify-center shadow-lg hover:shadow-xl disabled:opacity-50"
-                    onclick="generateBlurb()"
-                    disabled>
-                    <span id="button-text">Skapa Blurb & Spara</span>
-                    <div id="loading-spinner" class="loading-animation ml-2 hidden"></div>
-                </button>
-                
-                <!-- Ny plats för diskret användarinfo -->
-                <p id="user-info" class="text-xs text-gray-400 mt-4 text-center">Ansluter till Blurb-tjänsten...</p>
-
+            <!-- Laddningsindikator -->
+            <div id="loading-container" class="flex flex-col items-center justify-center p-12 card-entry rounded-xl shadow-lg" data-aos="fade-up">
+                <div class="loading-animation"></div>
+                <p class="mt-4 text-lg text-gray-700">Laddar dina dagliga inlägg...</p>
+            </div>
+            
+            <!-- Journalinnehåll -->
+            <div id="journal-content" class="hidden">
+                <!-- Inlägg grupperade efter månad/år kommer att läggas till här av JavaScript -->
             </div>
 
-            <!-- Result Area -->
-            <div id="result-card" class="card mt-8 p-6 md:p-8 rounded-2xl shadow-xl border border-purple-200 hidden" data-aos="fade-up">
-                <h2 class="text-2xl font-bold text-purple-600 mb-2 flex items-center">
-                    <i data-feather="feather" class="w-6 h-6 mr-2"></i>
-                    Din senaste Blurb
-                </h2>
-                <p id="poetry-output" class="poetry-text text-xl text-gray-800 leading-relaxed min-h-[30px]"></p>
-                <div class="mt-4 pt-4 border-t border-gray-100 text-center">
-                    <a href="journal.html" class="text-purple-600 hover:text-purple-700 font-medium underline transition flex items-center justify-center">
-                        Se alla dina Blurbs i din journal här
-                        <i data-feather="arrow-right" class="w-4 h-4 ml-1"></i>
-                    </a>
+            <!-- Inga inlägg hittades -->
+            <div id="no-entries-message" class="hidden text-center p-12 card-entry rounded-xl shadow-lg">
+                <i data-feather="book-open" class="w-12 h-12 text-purple-400 mx-auto mb-4"></i>
+                <h2 class="text-2xl font-bold text-gray-700 mb-2">Din journal är tom</h2>
+                <p class="text-gray-600">Börja skriva din första Blurb på <a href="index.html" class="text-purple-600 underline hover:text-purple-700 font-medium">hemsidan</a>!</p>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-gray-50 py-12 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-serif font-bold text-gray-800 mb-4">Blurb</h3>
+                    <p class="text-gray-600">
+                        Poesi i varje dag. En mening kan vara nog.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-4">Produkt</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Funktioner</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Priser</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">App</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-4">Resurser</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Blogg</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Inspiration</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-4">Följ oss</h4>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-600 hover:text-purple-600 transition">
+                            <i data-feather="instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-purple-600 transition">
+                            <i data-feather="twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-purple-600 transition">
+                            <i data-feather="facebook"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-
-            <!-- Error Message Box -->
-            <div id="error-message" class="card mt-8 p-6 rounded-xl shadow-md bg-red-50 border border-red-200 hidden text-red-700">
-                <p class="font-semibold flex items-center"><i data-feather="alert-triangle" class="w-5 h-5 mr-2"></i>Ett fel uppstod.</p>
-                <p id="error-text" class="mt-1 text-sm"></p>
+            <div class="border-t border-gray-200 mt-12 pt-8 text-center text-gray-500">
+                <p>© 2025 Blurb. Alla rättigheter reserverade.</p>
             </div>
-
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-100 py-6 px-4 mt-12">
-        <div class="max-w-6xl mx-auto text-center text-gray-500">
-            <p>© 2023 Blurb. Skapad med Gemini API.</p>
         </div>
     </footer>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        
-        // --- Globals ---
-        setLogLevel('Debug');
-        let db, auth, userId, isAuthReady = false;
-        
-        // Canvas variabler
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        
-        // HTML Element
-        const inputField = document.getElementById('daily-input');
-        const generateButton = document.getElementById('generate-button');
-        const buttonText = document.getElementById('button-text');
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const poetryOutput = document.getElementById('poetry-output');
-        const resultCard = document.getElementById('result-card');
-        const errorMessage = document.getElementById('error-message');
-        const errorText = document.getElementById('error-text');
-        const userInfoElement = document.getElementById('user-info'); // Nytt element
-
-        // --- Firebase/Auth Setup ---
-
-        async function initializeFirebase() {
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        userInfoElement.textContent = `Du är inloggad. Dina Blurbs sparas.`;
-                        isAuthReady = true;
-                        generateButton.disabled = false;
-                    } else {
-                        userId = crypto.randomUUID();
-                        userInfoElement.textContent = 'Du är anonym. Data sparas endast tillfälligt. Logga in för permanent sparning.';
-                        isAuthReady = true;
-                        generateButton.disabled = false;
-                    }
-                });
-
-            } catch (error) {
-                console.error("Fel vid initialisering av Firebase eller autentisering:", error);
-                errorText.textContent = "Kunde inte ansluta till databasen. Kontrollera din anslutning.";
-                errorMessage.classList.remove('hidden');
-                generateButton.disabled = true;
-            }
-        }
-        
-        // --- API & Database Functions ---
-
-        /**
-         * Retries a fetch request with exponential backoff.
-         */
-        async function fetchWithRetry(url, options, maxRetries = 3) {
-            for (let i = 0; i < maxRetries; i++) {
-                try {
-                    const response = await fetch(url, options);
-                    if (response.ok) {
-                        return response;
-                    }
-                    if (response.status === 429) { // Too many requests
-                        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        continue;
-                    }
-                    throw new Error(`API request failed with status: ${response.status}`);
-                } catch (error) {
-                    if (i === maxRetries - 1) throw error;
-                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                }
-            }
-        }
-        
-        /**
-         * Kallar Gemini API för att generera en poetisk mening.
-         * @param {string} input - Användarens dagliga inmatning.
-         * @returns {Promise<string>} Den genererade poetiska meningen.
-         */
-        async function getPoetryBlurb(input) {
-            const systemPrompt = "Du är en poetisk tolk. Omvandla följande text, oavsett längd, till en enda, kort, vacker, och suggestiv poetisk mening på svenska. Meningslängden är strikt begränsad till en mening. Inkludera inga inledande fraser som 'Här är meningen:' eller liknande, endast den poetiska meningen.";
-            const apiKey = "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: [{ parts: [{ text: input }] }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
-            };
-
-            const response = await fetchWithRetry(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            const result = await response.json();
-            const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-            
-            if (!text) {
-                throw new Error("Kunde inte generera poetisk mening.");
-            }
-            return text.trim();
-        }
-
-        /**
-         * Sparar inmatningen och den poetiska meningen till Firestore.
-         */
-        async function saveEntry(originalInput, poetrySentence) {
-            if (!isAuthReady || !db || !userId) {
-                console.warn("Firebase är inte redo att spara data.");
-                return;
-            }
-
-            try {
-                const now = new Date();
-                const entryData = {
-                    originalInput: originalInput,
-                    poetrySentence: poetrySentence,
-                    timestamp: now.getTime(),
-                    year: now.getFullYear(),
-                    month: now.getMonth() + 1, // Månad (1-12)
-                    day: now.getDate(),
-                    inputType: originalInput.includes(' ') ? 'Stycke' : 'Mening', // Enkel gissning om input-typ
-                };
-
-                const collectionPath = `/artifacts/${appId}/users/${userId}/daily_entries`;
-                await addDoc(collection(db, collectionPath), entryData);
-                console.log("Inlägg sparat till Firestore.");
-            } catch (error) {
-                console.error("Fel vid sparande till Firestore:", error);
-                throw new Error("Kunde inte spara inlägget.");
-            }
-        }
-
-        // --- Main Workflow ---
-
-        window.generateBlurb = async () => {
-            const originalInput = inputField.value.trim();
-            errorMessage.classList.add('hidden');
-            resultCard.classList.add('hidden');
-
-            if (originalInput.length < 5) {
-                errorText.textContent = "Skriv in minst 5 tecken för att skapa din Blurb.";
-                errorMessage.classList.remove('hidden');
-                return;
-            }
-
-            // Ställ in laddningsläge
-            generateButton.disabled = true;
-            buttonText.textContent = "Skapar...";
-            loadingSpinner.classList.remove('hidden');
-
-            try {
-                // 1. Generera Blurb
-                const poetrySentence = await getPoetryBlurb(originalInput);
-                
-                // 2. Spara till Journal
-                await saveEntry(originalInput, poetrySentence);
-                
-                // 3. Visa resultat
-                poetryOutput.textContent = poetrySentence;
-                resultCard.classList.remove('hidden');
-                inputField.value = ''; // Rensa fältet
-                
-            } catch (error) {
-                console.error("Huvudfel i genereringen:", error);
-                errorText.textContent = error.message || "Ett okänt fel uppstod under generering/sparande.";
-                errorMessage.classList.remove('hidden');
-            } finally {
-                // Återställ knapp
-                buttonText.textContent = "Skapa Blurb & Spara";
-                loadingSpinner.classList.add('hidden');
-                generateButton.disabled = false;
-                feather.replace(); // Uppdatera ikoner efter att resultatet visas
-            }
-        };
-
-        // --- Initialization ---
-
-        window.onload = () => {
-            initializeFirebase();
-            feather.replace();
-            AOS.init({
-                duration: 800,
-                easing: 'ease-in-out',
-                once: true
-            });
-        };
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        feather.replace();
     </script>
 </body>
 </html>
