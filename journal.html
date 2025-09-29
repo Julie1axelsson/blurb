@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal | Dina Blurbs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <!-- Firebase Imports -->
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js" type="module"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Quicksand:wght@300;400;500&display=swap');
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f7f3ff;
+            color: #5a5a5a;
+        }
+        
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            color: #3b3a3c;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+        }
+        
+        .card-entry {
+            background-color: #ffffff;
+            border-left: 5px solid #a18cd1; /* Lila accent */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-entry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(161, 140, 209, 0.2);
+        }
+        
+        .poetry-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .month-header {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .loading-animation {
+            border: 4px solid rgba(161, 140, 209, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #a18cd1;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg fixed w-full z-10">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <!-- Loggan länkar till startsidan -->
+                    <a href="index.html" class="text-2xl font-bold text-purple-600 header-title hover:text-purple-700 transition">Blurb</a>
+                </div>
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <!-- "Hem" borttaget -->
+                    <a href="#" class="text-purple-600 font-medium transition border-b-2 border-purple-600 pb-1">Journal</a>
+                    
+                    <!-- Länkar -->
+                    <a href="https://julie1axelsson.github.io/blurb/faq" class="text-gray-700 hover:text-purple-600 transition">FAQ</a>
+                    <a href="https://julie1axelsson.github.io/blurb/omblurb" class="text-gray-700 hover:text-purple-600 transition">Om Blurb</a>
+                    
+                    <a href="https://julie1axelsson.github.io/blurb/skapabok" class="text-gray-700 hover:text-purple-600 transition">Skapa bok</a>
+                    <a href="https://julie1axelsson.github.io/blurb/loggain" class="px-4 py-2 rounded-full text-purple-600 border border-purple-600 hover:bg-purple-600 hover:text-white transition">Logga in</a>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-gray-700">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="hero-bg pt-28 pb-16 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-4 text-center" data-aos="fade-down">
+            <h1 class="text-5xl md:text-6xl header-title font-bold text-white mb-3">Min Journal</h1>
+            <p class="text-xl text-white font-medium">Alla dina sparade poetiska Blurbs, samlade genom tiden.</p>
+        </div>
+    </section>
+
+    <!-- Main Content Section -->
+    <section class="py-12 relative">
+        <div class="max-w-3xl mx-auto px-4">
+            
+            <!-- Laddningsindikator -->
+            <div id="loading-container" class="flex flex-col items-center justify-center p-12 card-entry rounded-xl shadow-lg" data-aos="fade-up">
+                <div class="loading-animation"></div>
+                <p class="mt-4 text-lg text-gray-700">Laddar dina dagliga inlägg...</p>
+            </div>
+            
+            <!-- Journalinnehåll -->
+            <div id="journal-content" class="hidden">
+                <!-- Inlägg grupperade efter månad/år kommer att läggas till här av JavaScript -->
+            </div>
+
+            <!-- Inga inlägg hittades -->
+            <div id="no-entries-message" class="hidden text-center p-12 card-entry rounded-xl shadow-lg">
+                <i data-feather="book-open" class="w-12 h-12 text-purple-400 mx-auto mb-4"></i>
+                <h2 class="text-2xl font-bold text-gray-700 mb-2">Din journal är tom</h2>
+                <p class="text-gray-600">Börja skriva din första Blurb på <a href="index.html" class="text-purple-600 underline hover:text-purple-700 font-medium">hemsidan</a>!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-6 px-4 mt-12">
+        <div class="max-w-6xl mx-auto text-center text-gray-500">
+            <p>© 2023 Blurb. Skapad med Gemini API.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, query, doc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // --- Globals ---
+        setLogLevel('Debug');
+        let db, auth, userId;
+        
+        // Canvas variabler
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        // HTML Element
+        const journalContent = document.getElementById('journal-content');
+        const loadingContainer = document.getElementById('loading-container');
+        const noEntriesMessage = document.getElementById('no-entries-message');
+
+        const monthNames = ["Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"];
+
+        // --- Firebase/Auth Setup ---
+
+        async function initializeFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        fetchDailyEntries();
+                    } else {
+                        userId = crypto.randomUUID();
+                        fetchDailyEntries(); 
+                    }
+                });
+
+            } catch (error) {
+                console.error("Fel vid initialisering av Firebase eller autentisering:", error);
+                // Visa ett felmeddelande
+                loadingContainer.classList.add('hidden');
+                noEntriesMessage.classList.remove('hidden');
+                noEntriesMessage.innerHTML = `<i data-feather="alert-triangle" class="w-12 h-12 text-red-400 mx-auto mb-4"></i><h2 class="text-2xl font-bold text-gray-700 mb-2">Kunde inte ladda journalen</h2><p class="text-gray-600">Kontrollera din anslutning.</p>`;
+                feather.replace();
+            }
+        }
+        
+        /**
+         * Lyssnar på alla dagliga inlägg för den aktuella användaren och renderar dem.
+         */
+        function fetchDailyEntries() {
+            if (!userId) return;
+
+            const collectionPath = `/artifacts/${appId}/users/${userId}/daily_entries`;
+            const entriesCollection = collection(db, collectionPath);
+            
+            // Använd onSnapshot för att få realtidsuppdateringar
+            onSnapshot(entriesCollection, (snapshot) => {
+                const entries = [];
+                snapshot.forEach(doc => {
+                    entries.push(doc.data());
+                });
+
+                // Sortera efter tidsstämpel (nyaste först)
+                entries.sort((a, b) => b.timestamp - a.timestamp); 
+                
+                renderJournal(entries);
+
+            }, (error) => {
+                console.error("Fel vid realtidslyssning av journal:", error);
+                loadingContainer.classList.add('hidden');
+                noEntriesMessage.classList.remove('hidden');
+            });
+        }
+
+        /**
+         * Renderar de hämtade inläggen, grupperade efter år och månad.
+         * @param {Array<Object>} entries - Listan över inlägg från Firestore.
+         */
+        function renderJournal(entries) {
+            loadingContainer.classList.add('hidden');
+            journalContent.innerHTML = '';
+
+            if (entries.length === 0) {
+                noEntriesMessage.classList.remove('hidden');
+                journalContent.classList.add('hidden');
+                return;
+            }
+
+            journalContent.classList.remove('hidden');
+            noEntriesMessage.classList.add('hidden');
+
+            // Gruppera efter ÅÅÅÅ-MM
+            const groupedEntries = entries.reduce((acc, entry) => {
+                // Använd YYYY-MM för gruppering
+                const key = `${entry.year}-${String(entry.month).padStart(2, '0')}`;
+                if (!acc[key]) {
+                    acc[key] = [];
+                }
+                acc[key].push(entry);
+                return acc;
+            }, {});
+
+            // Gå igenom de grupperade inläggen (nyaste månaden först)
+            const sortedKeys = Object.keys(groupedEntries).sort().reverse();
+
+            sortedKeys.forEach(key => {
+                const [year, monthIndex] = key.split('-');
+                const monthName = monthNames[parseInt(monthIndex, 10) - 1]; // -1 för array-index
+
+                // 1. Skapa Månadsrubrik
+                const header = document.createElement('h2');
+                header.className = 'month-header text-4xl font-bold text-gray-800 mt-10 mb-6 border-b pb-2 border-purple-200';
+                header.textContent = `${monthName} ${year}`;
+                header.setAttribute('data-aos', 'fade-right');
+                journalContent.appendChild(header);
+
+                // 2. Skapa inläggskort
+                groupedEntries[key].forEach(entry => {
+                    const card = createEntryCard(entry);
+                    journalContent.appendChild(card);
+                });
+            });
+
+            // Ersätt ikoner efter att innehållet har lagts till
+            feather.replace();
+        }
+
+        /**
+         * Skapar ett HTML-element för ett enskilt inlägg.
+         */
+        function createEntryCard(entry) {
+            const date = new Date(entry.timestamp);
+            const dateString = date.toLocaleDateString('sv-SE', { weekday: 'short', day: 'numeric', month: 'short' });
+
+            const card = document.createElement('div');
+            card.className = 'card-entry p-5 mb-4 rounded-xl shadow-md flex justify-between items-start';
+            card.setAttribute('data-aos', 'fade-up');
+
+            // Vänster sida (Poetisk mening och originalinmatning)
+            const content = document.createElement('div');
+            content.className = 'flex-grow pr-4';
+
+            // Poesi
+            const poetry = document.createElement('p');
+            poetry.className = 'poetry-text text-xl text-gray-800 mb-2 leading-relaxed';
+            poetry.textContent = entry.poetrySentence;
+            content.appendChild(poetry);
+
+            // Originalinmatning (gömd som detalj)
+            const details = document.createElement('p');
+            details.className = 'text-sm text-gray-500 mt-1';
+            const inputType = entry.inputType === 'Mening' ? 'Mening' : 'Svar';
+            details.textContent = `${inputType}: "${entry.originalInput.substring(0, 70)}${entry.originalInput.length > 70 ? '...' : ''}"`;
+            content.appendChild(details);
+
+            card.appendChild(content);
+
+            // Höger sida (Datum)
+            const dateContainer = document.createElement('div');
+            dateContainer.className = 'flex-shrink-0 text-right';
+            
+            const dateSpan = document.createElement('span');
+            dateSpan.className = 'text-sm font-semibold text-purple-600 uppercase';
+            dateSpan.textContent = dateString;
+            dateContainer.appendChild(dateSpan);
+            
+            card.appendChild(dateContainer);
+
+            return card;
+        }
+
+
+        // --- Initialization ---
+
+        window.onload = () => {
+            initializeFirebase();
+            feather.replace();
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+        };
+    </script>
+</body>
+</html>
